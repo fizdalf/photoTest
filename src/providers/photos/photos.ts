@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin } from 'rxjs/observable/forkJoin';
+import { tap } from 'rxjs/operators';
 import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { PhotoItem } from '../../pages/home/home';
 
@@ -35,8 +36,15 @@ export class PhotosProvider {
   }
 
   uploadPhotos() {
-    return forkJoin(this.photos.map(photoItem => {
-      return this.http.post('http://hub.brightonandhoveinventories.com/API/v1.0/photoTestUpload', photoItem);
-    }));
+    return forkJoin(this.photos.slice().map((photoItem, idx) => {
+        return this.http.post('http://hub.brightonandhoveinventories.com/API/v1.0/photoTestUpload', photoItem).pipe(
+          tap(success => {
+              this.photos = this.photos.filter((value, index) => index != idx);
+              this.photosSubject.next(this.photos);
+            }
+          )
+        );
+      }
+    ));
   }
 }
