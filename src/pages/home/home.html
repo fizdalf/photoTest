@@ -7,8 +7,49 @@
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <ion-list>
+    <ion-item>
+      <ion-label fixed>Width</ion-label>
+      <ion-input type="number" [(ngModel)]="width"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label fixed>Height</ion-label>
+      <ion-input type="number" [(ngModel)]="height"></ion-input>
+    </ion-item>
+    <ion-list>
+      <ion-list-header>
+        <ion-label>
+          Quality
+        </ion-label>
+        <ion-badge item-end>{{quality}}</ion-badge>
+      </ion-list-header>
+      <ion-item>
+        <ion-range [(ngModel)]="quality" [min]="0" [max]="100"></ion-range>
+      </ion-item>
+    </ion-list>
+    <ion-list radio-group [(ngModel)]="plugin">
+
+      <ion-list-header>
+        Plugin
+      </ion-list-header>
+
+      <ion-item>
+        <ion-label>Native</ion-label>
+        <ion-radio value="native"></ion-radio>
+      </ion-item>
+      <ion-item>
+        <ion-label>Camera Preview</ion-label>
+        <ion-radio value="preview"></ion-radio>
+      </ion-item>
+
+    </ion-list>
+    <ion-item>
+      <button ion-button (click)="takePhoto()">Take Photo</button>
+    </ion-item>
+    <ion-list>
+      <ion-item *ngFor="let photo of photos$ | async">
+
+      </ion-item>
+    </ion-list>
+  </ion-list>
 </ion-content>
